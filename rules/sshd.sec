@@ -1,0 +1,8 @@
+type=SingleWithThreshold
+ptype=RegExp
+pattern=sshd\[\d+\]: Failed .+ for (\S+) from ([\d.]+) port \d+ ssh2
+desc=user $1 ip $2
+action=pipe 'Too many SSH login failures for user $1 from $2' \
+            mail root@localhost
+thresh=3
+window=300

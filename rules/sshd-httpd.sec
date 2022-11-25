@@ -1,0 +1,11 @@
+type=EventGroup2
+ptype=RegExp
+pattern=sshd\[\d+\]: Failed password for (?<user>\S+) from (?<ip>[\d.]+) port \d+ ssh2
+thresh=2
+ptype2=RegExp
+pattern2=^(?<ip>[\d.]+) - - \[.+?\] "GET /~(?<user>[^\s/]+)\S* HTTP/[\d.]+" 404
+thresh2=2
+desc=user $+{user} ip $+{ip}
+action=pipe 'SSH and web probing for user $+{user} from $+{ip}' mail root@localhost
+window=60
+

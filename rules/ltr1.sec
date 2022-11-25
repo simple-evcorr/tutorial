@@ -1,0 +1,18 @@
+type=Single
+ptype=SubStr
+pattern=AAA
+rem=after this rule has matched, don't consider following \
+    rules in this configuration file, since 'continue' \
+    defaults to 'DontCont'
+desc=Three A characters
+action=write - three A characters were observed
+
+type=Single
+ptype=SubStr
+pattern=BBB
+rem=after this rule has matched, don't consider any other \
+    rules (in other words, search for matching rules ends \
+    for all configuration files)
+continue=EndMatch
+desc=Three B characters
+action=write - three B characters were observed 

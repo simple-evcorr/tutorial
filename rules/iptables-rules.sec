@@ -1,0 +1,13 @@
+type=Options
+procallin=no
+joincfset=iptables
+
+type=SingleWithThreshold
+ptype=RegExp
+pattern=kernel: iptables:.* SRC=([\d.]+)
+context=!PACKET_DROPS_REPORTED_$1
+desc=packet drops IP $1
+action=pipe 'Too many dropped packets from $1' mail root@localhost; \
+       create PACKET_DROPS_REPORTED_$1 3600
+window=10
+thresh=100

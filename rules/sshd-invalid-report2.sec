@@ -1,0 +1,21 @@
+type=Single
+ptype=RegExp
+pattern=sshd\[\d+\]: Failed .+ for invalid user \S+ from ([\d.]+) port \d+ ssh2
+context=!SSH_INVALID_ACCOUNT_PROBES_$1
+continue=TakeNext
+desc=create reporting context for $1
+action=create SSH_INVALID_ACCOUNT_PROBES_$1 60 \
+       ( report SSH_INVALID_ACCOUNT_PROBES_$1 mail root@localhost )
+
+# Add the SSH probe event to the event store of the host's context.
+# Also, extend the lifetime of the context by 60 seconds starting 
+# from the current moment.
+
+type=Single
+ptype=RegExp
+pattern=sshd\[\d+\]: Failed .+ for invalid user \S+ from ([\d.]+) port \d+ ssh2
+context=SSH_INVALID_ACCOUNT_PROBES_$1
+desc=add SSH account probe event to reporting context for $1
+action=add SSH_INVALID_ACCOUNT_PROBES_$1 $0; \
+       set SSH_INVALID_ACCOUNT_PROBES_$1 60
+              

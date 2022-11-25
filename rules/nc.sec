@@ -1,0 +1,13 @@
+type=Single
+ptype=RegExp
+pattern=^(?:SEC_STARTUP|SEC_RESTART)$
+context=[ SEC_INTERNAL_EVENT ]
+desc=listen on 10514/tcp for incoming events
+action=cspawn NETCAT nc -l -k 10514
+
+type=Single
+ptype=RegExp
+pattern=.
+context=[ NETCAT ]
+desc=echo events from 10514/tcp
+action=write - $0 

@@ -1,0 +1,12 @@
+type=Single
+ptype=PerlFunc
+pattern=sub { my(%var); \
+  if ($_[0] !~ /sshd\[\d+\]: Failed .+ for (\S+) from ([\d.]+) port (\d+) ssh2/) { \
+    return 0; \
+  } \
+  if ($3 > 1023) { return 0; } \
+  $var{"user"} = $1; $var{"ip"} = $2; $var{"port"} = $3; \
+  return \%var; \
+}
+desc=failed login attempt from privileged port
+action=write - SSH login failure for $+{user} from privileged port $+{port} at $+{ip}

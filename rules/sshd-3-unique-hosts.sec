@@ -1,0 +1,12 @@
+type=EventGroup
+ptype=RegExp
+pattern=sshd\[\d+\]: Failed .+ for (\S+) from ([\d.]+) port \d+ ssh2
+desc=user $1
+egtoken=$2
+egptype=PerlFunc
+egpattern=sub { my(%hosts) = map { $_ => 1 } @{$_[1]}; \
+                return scalar(keys %hosts) >= 3; }
+action=pipe 'SSH login failures from 3 different hosts for user $1' \
+            mail root@localhost
+window=60
+thresh=3 

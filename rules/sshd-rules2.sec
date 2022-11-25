@@ -1,0 +1,22 @@
+type=Options
+procallin=no
+joincfset=sshd2
+
+type=PairWithWindow
+ptype=RegExp
+pattern=sshd\[\d+\]: Failed .+ for (\S+) from ([\d.]+) port \d+ ssh2
+desc=user $1 ip $2
+action=cevent SSH 0 SSH_PROBE_FROM_HOST_$2
+ptype2=RegExp
+pattern2=sshd\[\d+\]: Accepted .+ for $1 from $2 port \d+ ssh2
+desc2=SSH login successful for %1 from %2
+action2=logonly %s
+window=120
+
+type=SingleWithThreshold
+ptype=RegExp
+pattern=SSH_PROBE_FROM_HOST_([\d.]+)
+desc=ip $1
+action=pipe 'Repeated account probing from $1' mail root@localhost 
+thresh=3
+window=300

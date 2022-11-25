@@ -1,0 +1,7 @@
+type=Single
+ptype=RegExp
+pattern=sshd\[\d+\]: Failed .+ for \S+ from ([\d.]+) port \d+ ssh2
+desc=login failure
+action=write /var/log/ssh-failures.log SSH login failure from $1; \
+       pipe 'SSH login failure from $1' mail root@localhost
+

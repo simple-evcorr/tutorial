@@ -1,0 +1,19 @@
+# This rule starts an event correlation operation for iptables 
+# blocked packet event for TELNET/SMTP service from an IP address. 
+# If from the same IP address an iptables event for port 23/tcp is 
+# immediately followed by event for port 25/tcp, and this sequence
+# of two events is observed two times within 60 seconds, an e-mail 
+# alert is sent to local root user.
+
+type=EventGroup2
+ptype=RegExp
+pattern=kernel: iptables:.* SRC=([\d.]+) .* PROTO=TCP .* DPT=23\b
+thresh=2
+ptype2=RegExp
+pattern2=kernel: iptables:.* SRC=([\d.]+) .* PROTO=TCP .* DPT=25\b
+thresh2=2
+desc=Two TELNET->SMTP port probe sequences from host $1
+egptype=RegExp
+egpattern=1 2.*1 2
+action=pipe '%s' mail root@localhost
+window=60

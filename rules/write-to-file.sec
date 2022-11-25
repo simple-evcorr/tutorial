@@ -1,0 +1,5 @@
+type=Single
+ptype=RegExp
+pattern=.
+desc=write input line to file
+action=write /var/log/echo.log %t: $0

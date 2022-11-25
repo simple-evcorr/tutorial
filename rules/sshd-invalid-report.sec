@@ -1,0 +1,26 @@
+# If there has been an SSH probe of a non-existing user account from 
+# some host, create a reporting context for that host (provided that 
+# the context does not exist already). The context lifetime will be 
+# set to 60 seconds. When the context expires, all events recorded 
+# into the context event store will be mailed to root@localhost.
+
+type=Single
+ptype=RegExp
+pattern=sshd\[\d+\]: Failed .+ for invalid user \S+ from ([\d.]+) port \d+ ssh2
+context=!SSH_INVALID_ACCOUNT_PROBES_$1
+continue=TakeNext
+desc=create reporting context for $1
+action=create SSH_INVALID_ACCOUNT_PROBES_$1 60 \
+       ( report SSH_INVALID_ACCOUNT_PROBES_$1 mail root@localhost )
+
+# Add the SSH probe event to the event store of the host's context.
+# Note that if the context did not exist before the arrival of the 
+# current event, the context has been created by the previous rule.
+              
+type=Single
+ptype=RegExp
+pattern=sshd\[\d+\]: Failed .+ for invalid user \S+ from ([\d.]+) port \d+ ssh2
+context=SSH_INVALID_ACCOUNT_PROBES_$1
+desc=add SSH account probe event to reporting context for $1
+action=add SSH_INVALID_ACCOUNT_PROBES_$1 $0
+              

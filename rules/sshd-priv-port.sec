@@ -1,0 +1,6 @@
+type=Single
+ptype=RegExp
+pattern=sshd\[\d+\]: Failed .+ for (\S+) from ([\d.]+) port (\d+) ssh2
+context=$3 -> ( sub { $_[0] < 1024 } )
+desc=failed login attempt from privileged port
+action=write - SSH login failure for $1 from privileged port $3 at $2

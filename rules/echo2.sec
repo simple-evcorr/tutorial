@@ -1,0 +1,6 @@
+type=Single
+ptype=RegExp
+pattern=.
+context=_FILE_EVENT_/var/log/messages
+desc=echo input line from /var/log/messages
+action=write - $0

@@ -1,0 +1,12 @@
+# a simple rule example
+
+type=Single
+rem=the pattern provided below matches \
+    any non-empty input line, assigning \
+    the entire line to the $0 match variable
+ptype=RegExp
+pattern=.
+desc=echo input line
+action=write - %t: $0
+
+# end of the rule definition

@@ -1,0 +1,17 @@
+type=Jump
+ptype=SubStr
+pattern=kernel: iptables:
+context=[ _FILE_EVENT_/var/log/messages ]
+cfset=iptables
+
+type=Jump
+ptype=RegExp
+pattern=sshd\[\d+\]:
+context=[ _FILE_EVENT_/var/log/secure ]
+cfset=sshd1 sshd2
+
+type=Jump
+ptype=TValue
+pattern=True
+context=[ SSH ]
+cfset=sshd2

@@ -1,0 +1,12 @@
+type=Options
+procallin=no
+joincfset=sshd1
+
+type=SingleWithThreshold
+ptype=RegExp
+pattern=sshd\[\d+\]: Failed .+ for invalid user \S+ from ([\d.]+) port \d+ ssh2
+desc=ip $1
+action=pipe 'Repeated probing of non-existing accounts from $1' \
+            mail root@localhost
+thresh=10
+window=300

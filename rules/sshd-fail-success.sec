@@ -1,0 +1,10 @@
+type=PairWithWindow
+ptype=RegExp
+pattern=sshd\[\d+\]: Failed .+ for (\S+) from ([\d.]+) port \d+ ssh2
+desc=User $1 did not manage to log in from $2 within 5 minutes
+action=pipe '%s' mail root@localhost
+ptype2=RegExp
+pattern2=sshd\[\d+\]: Accepted .+ for $1 from $2 port \d+ ssh2
+desc2=User %1 logged in from %2 after initial failure
+action2=pipe '%s' logger -p authpriv.debug -t sec
+window=300

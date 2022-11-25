@@ -1,0 +1,28 @@
+# If the regular expression of the rule matches, the result 
+# of the match (i.e., all match variables and their values) 
+# will be cached under the pattern match cache entry SSH_PROBE.
+
+type=Single
+ptype=RegExp
+pattern=sshd\[\d+\]: Failed .+ for invalid user \S+ from ([\d.]+) port \d+ ssh2
+varmap=SSH_PROBE
+context=!SSH_INVALID_ACCOUNT_PROBES_$1
+continue=TakeNext
+desc=create reporting context for $1
+action=create SSH_INVALID_ACCOUNT_PROBES_$1 60 \
+       ( report SSH_INVALID_ACCOUNT_PROBES_$1 mail root@localhost )
+
+# In order to match the input event, the presence of the SSH_PROBE 
+# entry in the pattern match cache is checked. If the SSH_PROBE 
+# entry is found, the pattern matches and all match variables and 
+# their values will be retrieved from the SSH_PROBE entry. If the 
+# entry is not found, the pattern does not match.
+              
+type=Single
+ptype=Cached
+pattern=SSH_PROBE
+context=SSH_INVALID_ACCOUNT_PROBES_$1
+desc=add SSH account probe event to reporting context for $1
+action=add SSH_INVALID_ACCOUNT_PROBES_$1 $0; \
+       set SSH_INVALID_ACCOUNT_PROBES_$1 60
+              

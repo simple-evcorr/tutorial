@@ -1,0 +1,10 @@
+# An example event matched by this rule:
+# sshd[2181]: Failed password for bob from 10.1.1.1 port 55529 ssh2
+
+type=Single
+ptype=RegExp
+pattern=sshd\[\d+\]: Failed .+ for \S+ from ([\d.]+) port \d+ ssh2
+desc=login failure
+action=write /var/log/ssh-failures.log SSH login failure from $1; \
+       shellcmd echo 'SSH login failure from $1' | mail root@localhost
+

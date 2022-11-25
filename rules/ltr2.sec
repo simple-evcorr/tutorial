@@ -1,0 +1,25 @@
+type=Single
+ptype=SubStr
+pattern=CCC
+rem=after this rule has matched, continue from last rule \
+    in this configuration file
+continue=GoTo lastRule
+desc=Three C characters
+action=write - three C characters were observed
+
+type=Single
+ptype=SubStr
+pattern=DDD
+rem=after this rule has matched, continue from next rule \
+    in this configuration file
+continue=TakeNext
+desc=Three D characters
+action=write - three D characters were observed
+
+label=lastRule
+
+type=Single
+ptype=SubStr
+pattern=EEE
+desc=Three E characters
+action=write - three E characters were observed 

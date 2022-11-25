@@ -1,0 +1,7 @@
+type=Single
+ptype=SubStr
+pattern=SEND REPORTS
+desc=send reports
+action=shellcmd (cat /tmp/report | mail root; rm -f /tmp/report); \
+       write - report sent!
+

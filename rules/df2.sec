@@ -1,0 +1,13 @@
+type=Calendar
+time=* * * * *
+desc=run df command in every minute
+action=cspawn DF df -t xfs --output="source,target,pcent"
+
+type=SingleWithSuppress
+ptype=RegExp
+pattern=^(\S+)\s+(\S+)\s+(9[5-9]|100)%
+context=[ DF ]
+desc=file system $1 is getting full
+action=pipe 'File system $1 mounted on $2 is used by $3%' \
+            mail root@localhost
+window=3600

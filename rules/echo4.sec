@@ -1,0 +1,6 @@
+type=Single
+ptype=RegExp
+pattern=.
+context=[ _FILE_EVENT_/var/log/messages || _FILE_EVENT_/var/log/secure ]
+desc=echo input lines from /var/log/messages and /var/log/secure
+action=write - $+{_inputsrc} $+{_intcontext} $0

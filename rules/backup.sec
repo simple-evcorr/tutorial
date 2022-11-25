@@ -1,0 +1,22 @@
+# generate a synthetic event 'Checking if backup is done'
+# every evening at 5:59 PM
+
+type=Calendar
+time=59 17 * * *
+desc=trigger backup check
+action=event Checking if backup is done
+
+# after observing the synthetic event, wait for the backup
+# completion message during the following 6 minutes, and
+# send a warning email if it does not arrive 
+
+type=PairWithWindow
+ptype=SubStr
+pattern=Checking if backup is done
+desc=checking for backup
+action=pipe 'Backup not completed on time' mail root@localhost
+ptype2=RegExp
+pattern2=backup\.sh\[\d+\]: Backup completed
+desc2=Backup completed
+action2=logonly %s
+window=360
