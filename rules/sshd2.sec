@@ -2,7 +2,7 @@ type=SingleWithThreshold
 ptype=RegExp
 pattern=^(.{15}) \S+ sshd\[\d+\]: Failed .+ for (\S+) from ([\d.]+) port \d+ ssh2
 desc=user $2 ip $3
-action=pipe 'Too many SSH login failures for user $2 from $3 (first event $1)' \
+action=pipe '%t: Too many SSH login failures for user $2 from $3 (first event $1)' \
             mail root@localhost
 thresh=3
 window=300
